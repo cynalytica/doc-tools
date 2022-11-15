@@ -1,0 +1,17 @@
+updateDocsComment: >
+  Thanks for opening this pull request! The maintainers of this repository would appreciate it if you would update some of our documentation based on your changes.
+updateDocsWhiteList:
+  - bug
+  - :bug:
+  - chore
+# Comment to be posted to on first time issues
+newIssueWelcomeComment: >
+  Thanks for opening your first issue here!
+
+# Comment to be posted to on PRs from first time contributors in your repository
+newPRWelcomeComment: >
+  Thanks for opening this pull request! Please ensure that you have followed the guidelines.
+
+# Comment to be posted to on pull requests merged by a first time user
+firstPRMergeComment: >
+  Congrats on merging your first pull request! Long may they continue

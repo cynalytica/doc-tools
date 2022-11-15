@@ -1,0 +1,49 @@
+project_name: doc-tools
+before:
+  hooks:
+    - go generate ./...
+    - go mod tidy
+builds:
+  - id: doc-tools
+    env:
+      - CGO_ENABLED=0
+    goarch:
+      - amd64
+    goos:
+      - linux
+    goamd64:
+      - v1
+      - v2
+    binary: 'doc-tools-{{.Os}}-{{.Arch}}'
+    ldflags:
+      - "-w"
+      - "-s"
+      - '-X github.com/cynalytica/doc-tools/meta.Version={{ .Version }}'
+      - "-X github.com/cynalytica/doc-tools/meta.CommitHash={{ .FullCommit }}"
+      - "-X github.com/cynalytica/doc-tools/meta.CompileDate={{ .CommitDate }}"
+    hooks:
+      post:
+        - '{{if and (ne .Os "js") (and (ne .Os "windows") (ne .Arch "386") )  }} upx -qqq -9 "{{ .Path }}" {{else}} echo "{{ .Path }}" {{ end }}'
+
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Version }}-{{.ShortCommit}}"
+archives:
+  - format: binary
+    allow_different_binary_count: true
+nfpms:
+  - id: doc-tools
+    builds:
+      - doc-tools
+    replacements:
+      amd64: 64-bit
+    vendor: Cynalytica
+    homepage: https://github.com/cynalytica/doc-tools
+    maintainer: Maintainer <maintainers@cynalytica.com>
+announce:
+  teams:
+    enabled: true
+    title_template: Doc Tools {{ .Version }} was just released!'
+    color: '#fc8403'
+    icon_url: "https://cynalytica.com/wp-content/uploads/2020/06/cynalytica_finallogo_color.png"
