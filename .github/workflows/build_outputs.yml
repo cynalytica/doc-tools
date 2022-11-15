@@ -1,0 +1,72 @@
+name: "Build Golang Outputs"
+
+on:
+  release:
+    types:
+      - created
+  pull_request:
+  push:
+    branches:
+      - master
+      - feature/*
+
+env:
+  BINARY_NAME: 'doc-tools'
+jobs:
+  build:
+    env:
+      TEAMS_WEBHOOK: "https://netorgft5997636.webhook.office.com/webhookb2/9b487875-a6ef-4135-9d04-6202ddaf5a7c@0f6eca35-2663-410d-b5c6-e98b84625e0f/IncomingWebhook/7ddef9a8bcd349f082dca8e959b5d850/61b9d42e-f8b2-4f47-ba02-5c6806b1dac4"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18.x
+      - name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        if: success() && startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request'
+        with:
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        if: success() && (github.event_name == 'pull_request' || github.event_name == 'push')
+        with:
+          version: latest
+          args: release --rm-dist --snapshot --skip-publish=false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: binaries
+          path: dist/*
+      - name: Extract branch name
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        id: vars
+        run: echo "##[set-output name=sha;]$(echo $GITHUB_SHA )"
+      - name: Upload Artifacts to Release
+        if: success() && startsWith(github.ref, 'refs/tags/')
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: "${{ github.workspace }}/dist/*"
+          name: ${{ github.event.release.tag_name }}
+          tag: ${{ github.event.release.tag_name }}
+          commit: ${{ steps.vars.outputs.sha }}
+          draft: ${{ github.event.release.draft }}
+          prerelease: ${{ github.event.release.prerelease }}
+          token: ${{ secrets.CYNALYTICA_OAT }}
