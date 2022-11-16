@@ -41,9 +41,3 @@ nfpms:
     vendor: Cynalytica
     homepage: https://github.com/cynalytica/doc-tools
     maintainer: Maintainer <maintainers@cynalytica.com>
-announce:
-  teams:
-    enabled: true
-    title_template: Doc Tools {{ .Version }} was just released!'
-    color: '#fc8403'
-    icon_url: "https://cynalytica.com/wp-content/uploads/2020/06/cynalytica_finallogo_color.png"
