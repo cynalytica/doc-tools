@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/cynalytica/doc-tools/commands/pdf"
 	"github.com/cynalytica/doc-tools/commands/toc"
 	"github.com/cynalytica/doc-tools/internal/flags"
@@ -65,6 +66,15 @@ func main() {
 			Aliases: []string{"pdf"},
 			Action:  pdf.Create,
 			Flags:   append(flags.BuildCommonFlags(), flags.BuildPdfFlags()...),
+		},
+		{
+			Name:    "version",
+			Before:  flags.HandleConfigFile,
+			Aliases: []string{"v"},
+			Action: func(cCtx *cli.Context) error {
+				fmt.Printf("%s v%s (%s)", meta.Name, meta.Version, meta.CommitHash)
+				return nil
+			},
 		},
 	}
 	go sigHandler(ctx, sighandle)
