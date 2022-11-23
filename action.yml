@@ -1,0 +1,72 @@
+name: "Cynalytica Docs Tool"
+description: "A wrapper tool to build PDF from markdown using pandoc and latex engine"
+author: Cynalytica
+branding:
+  color: orange
+  icon: paperclip
+
+
+
+inputs:
+  source-folder:
+    description: Locaiton of directory to convert to PDF
+  title:
+    description: Title to apply to document
+    default: ''
+  subtitle:
+    description: Subtitle to apply to document
+    default: ''
+  description:
+    description: Description to apply to document
+    default: ''
+  regex-file:
+    description: Location of a line seperated regex file.
+    default: ''
+  token:
+    description: Token used for downloading/uploading
+    default: ${{ secrets.GITHUB_TOKEN }}
+
+
+outputs:
+  outputfile:
+    description: "location of generated PDF"
+    value: ${{ steps.build-pdf.outputs.file}}
+
+runs:
+  using: composite
+  steps:
+    - uses: nikeee/setup-pandoc@v1
+      with:
+        pandoc-version: '2.19.2'
+    - uses: teatimeguest/setup-texlive-action@v2
+      with:
+        version: 2022
+        packages: >-
+          scheme-basic
+          hyperref
+          booktabs
+          fvextra
+          pdflscape
+          caption
+          amsmath
+          unicode-math
+          etoolbox
+          fancyvrb
+          upquote
+          lineno
+          xcolor
+          footnote
+    - uses: threecommaio/fetch-gh-release-binary@main
+      with:
+        owner: cynalytica
+        repo: doc-tools
+        asset-pattern: linux_amd64
+        install-path: /usr/local/bin/doc-tools
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+    - shell: bash
+      id: build-pdf
+      run: |
+        outputdir=$(mktemp -d)
+        doc-tools pdf -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" -o "$outputdir/${{ inputs.title }}.pdf" --regex-file "${{ inputs.regex-file}}"
+        echo "file=$outputdir/${{inputs.title}}.pdf" >> $GITHUB_OUTPUT

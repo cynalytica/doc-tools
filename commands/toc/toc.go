@@ -4,21 +4,23 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
+	"runtime/debug"
+	"sort"
+	"strings"
+
 	tocLib "github.com/abhinav/goldmark-toc"
 	"github.com/adrg/frontmatter"
-	"github.com/cynalytica/doc-tools/internal/flags"
-	"github.com/cynalytica/doc-tools/internal/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/text"
-	"os"
-	"path/filepath"
-	"runtime/debug"
-	"sort"
-	"strings"
+
+	"github.com/cynalytica/doc-tools/internal/flags"
+	"github.com/cynalytica/doc-tools/internal/utils"
 )
 
 type manifest struct {
@@ -53,7 +55,10 @@ func Run(ctx *cli.Context) error {
 			logrus.Errorf(msg)
 		}
 	}()
-
+	err = utils.SetUpRegex(ctx)
+	if err != nil {
+		return err
+	}
 	// get and format args
 	dir := ctx.String(flags.Location)
 	if _, err = os.Stat(dir); os.IsNotExist(err) {

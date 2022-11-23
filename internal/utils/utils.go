@@ -1,10 +1,12 @@
 package utils
 
 import (
-	"github.com/cynalytica/doc-tools/internal/flags"
+	"regexp"
+
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
-	"regexp"
+
+	"github.com/cynalytica/doc-tools/internal/flags"
 )
 
 var (
@@ -22,6 +24,11 @@ func SetUpRegex(cCtx *cli.Context) error {
 	rm := regexp.MustCompile("/(.*)/")
 	rmRp := regexp.MustCompile("/(.*)/(.*)/")
 	regexArgs := cCtx.StringSlice(flags.Regex)
+	regexArgsFile := cCtx.Generic(flags.RegexFile).(*flags.StringArrayFile)
+	if regexArgsFile != nil && regexArgsFile.IsSet() {
+		regexArgs = append(regexArgs, regexArgsFile.Values()...)
+	}
+
 	for _, arg := range regexArgs {
 		var rmStr string
 		var rpStr string

@@ -7,10 +7,11 @@ const (
 
 	// common configs
 
-	Location = "location"
-	Title    = "title"
-	Subtitle = "subtitle"
-	Regex    = "regex"
+	Location  = "location"
+	Title     = "title"
+	Subtitle  = "subtitle"
+	Regex     = "regex"
+	RegexFile = "regex-file"
 
 	// TOC configs
 
