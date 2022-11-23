@@ -4,17 +4,19 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"github.com/adrg/frontmatter"
-	"github.com/cynalytica/doc-tools/internal/flags"
-	"github.com/cynalytica/doc-tools/internal/utils"
-	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli/v2"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime/debug"
 	"sort"
 	"strings"
+
+	"github.com/adrg/frontmatter"
+	"github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
+
+	"github.com/cynalytica/doc-tools/internal/flags"
+	"github.com/cynalytica/doc-tools/internal/utils"
 )
 
 //go:embed cyrenql.xml cytemplate.tex
@@ -36,6 +38,10 @@ func Create(ctx *cli.Context) error {
 		}
 	}()
 
+	err = utils.SetUpRegex(ctx)
+	if err != nil {
+		return err
+	}
 	// we create a bunch of temp files, clean them all up here
 	tempFiles := make([]string, 0)
 	defer closeFiles(tempFiles)
@@ -135,7 +141,19 @@ abstract: %s
 	}
 
 	// run the pandoc command
-	args := []string{"-s", "--toc", "--pdf-engine", "pdflatex", "--from", "markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes", "--title", fmt.Sprintf("\"%s\"", title), "--template", templateFile.Name(), "--syntax-definition", syntaxFile.Name(), "-o", outputFile, "--metadata", fmt.Sprintf("\"title=%s\"", title), "--metadata", fmt.Sprintf("\"subtitle=%s\"", subtitle), "--metadata", fmt.Sprintf("\"abstract=%s\"", abstract)}
+	args := []string{"-s",
+		"--toc",
+		"--pdf-engine",
+		"pdflatex",
+		"--from",
+		"markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes",
+		"--title", fmt.Sprintf("\"%s\"", title),
+		"--template", templateFile.Name(),
+		"--syntax-definition", syntaxFile.Name(),
+		"-o", outputFile,
+		"--metadata", fmt.Sprintf("\"title=%s\"", title),
+		"--metadata", fmt.Sprintf("\"subtitle=%s\"", subtitle),
+		"--metadata", fmt.Sprintf("\"abstract=%s\"", abstract)}
 	args = append(args, orderedFiles...)
 	cmd := exec.Command("pandoc", args...)
 	str := cmd.String()

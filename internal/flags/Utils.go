@@ -85,6 +85,11 @@ func BuildCommonFlags() []cli.Flag {
 			Usage:   "Removes (`/text-to-remove/`) or replaces (`/remove/replace/`) text with regex.",
 			Aliases: []string{"r"},
 		},
+		&cli.GenericFlag{
+			Name:  RegexFile,
+			Usage: "Location of a file containing line seperated regexs",
+			Value: &StringArrayFile{},
+		},
 		&cli.StringFlag{
 			Name:    Description,
 			Usage:   "The overall description of the docs. Will appear in the doc's TOC.",

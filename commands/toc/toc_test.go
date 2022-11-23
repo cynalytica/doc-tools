@@ -1,10 +1,12 @@
 package toc
 
 import (
+	"testing"
+
+	"github.com/urfave/cli/v2"
+
 	"github.com/cynalytica/doc-tools/internal/flags"
 	"github.com/cynalytica/doc-tools/internal/utils"
-	"github.com/urfave/cli/v2"
-	"testing"
 )
 
 func TestRun(t *testing.T) {
@@ -25,7 +27,7 @@ func TestRun(t *testing.T) {
 			Action:  Run,
 		},
 	}
-	if err := app.Run([]string{"toc", "-l", "../../resources/test/project1", "-t", "Test Title", "-r", "/the/ttthheee/", "toc"}); err != nil {
+	if err := app.Run([]string{"", "-l", "../../resources/test/project1", "-t", "Test Title", "-r", "/the/ttthheee/", "-r", "/Head/Noggin/", "toc"}); err != nil {
 		t.Fatal(err)
 	}
 }
