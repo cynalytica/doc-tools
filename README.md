@@ -9,6 +9,8 @@
 - uses: cynalytica/docs-tool@v1
   id: docs-to-pdf
   with:
+    source-folder: "here lies dragons"
+    regex-file: "my fancy pants regex file"
     title: My Cool PDF
     subtitle: a world of imagination
     description: Converting my Markdown to PDF with cynalytica docs-tool
@@ -22,13 +24,15 @@
 
 ### Inputs/Outputs
 
-| Type    | Name        | Default                     | Description                                         | 
-|---------|-------------|-----------------------------|-----------------------------------------------------|
-| Input   | `title`       |                             | Title of your PDF document                          |
-| Input   | `subtitle`    |                             | Subtitle to go with your PDF                        |
-| Input   | `description` |                             | Description of your PDF                             | 
-| Input   | `token`       | `${{secrets.GITHUB_TOKEN}}` | [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for downloading cynalytica/docs-tool binary | 
-| Outpput | `outputfile`  |                             | location of file if successful                      |
+| Type    | Name          | Default                     | Description                                                                                                                                                        | 
+|---------|---------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Input   | `title`       |                             | Title of your PDF document                                                                                                                                         |
+| Input   | `subtitle`    |                             | Subtitle to go with your PDF                                                                                                                                       |
+| Input   | `description` |                             | Description of your PDF                                                                                                                                            | 
+| Input   | `token`       | `${{secrets.GITHUB_TOKEN}}` | [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for downloading cynalytica/docs-tool binary |
+| Input   | `source-file` |                             |                                                                                                                                                                    |
+| Input   | `regex-file`  |                             | File containing line seperated regexs                                                                                                                              |
+| Outpput | `outputfile`  |                             | location of file if successful                                                                                                                                     |
 
 ## How to Doc
 
