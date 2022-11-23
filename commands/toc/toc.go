@@ -89,17 +89,22 @@ func Run(ctx *cli.Context) error {
 		}
 		if !info.IsDir() {
 			path = filepath.ToSlash(path)
+			endpoint := strings.Replace(path, projectPath+string(os.PathSeparator)+"files"+string(os.PathSeparator), "", -1)
 			if filepath.Ext(path) == ".md" {
 				f := &file{
 					TOC:      make([]toc, 0),
+					Title:    strings.Replace(filepath.Base(path), ".md", "", -1),
+					Endpoint: strings.Replace(endpoint, ".md", "", -1),
 					Location: path,
 				}
 				manifestFile.Files = append(manifestFile.Files, f)
 				return nil
-			}
-			mediaDir, _ := filepath.Split(path)
-			if filepath.Base(mediaDir) == "media" {
-				manifestFile.Media = append(manifestFile.Media, strings.TrimPrefix(path, filepath.ToSlash(projectPath)))
+			} else {
+				path = strings.Replace(path, projectPath+string(os.PathSeparator), "", -1)
+				//mediaDir, _ := filepath.Split(path)
+				if strings.HasPrefix(path, "media/") {
+					manifestFile.Media = append(manifestFile.Media, path)
+				}
 			}
 		}
 		return nil
@@ -122,7 +127,8 @@ func Run(ctx *cli.Context) error {
 		if ctx.Bool(flags.IncludeContent) {
 			f.Content = string(content)
 		}
-		f.Endpoint = filepath.ToSlash(filepath.Join(strings.TrimSuffix(filepath.Base(f.Location), filepath.Ext(f.Location))))
+		//f.Endpoint = filepath.ToSlash(filepath.Join(strings.TrimSuffix(filepath.Base(f.Location), filepath.Ext(f.Location))))
+
 		clean := utils.CleanText(content)
 		doc := md.Parser().Parse(text.NewReader(clean))
 		var seen map[string]struct{} // keeps track of seen slugs to avoid duplicate ids
