@@ -1,6 +1,7 @@
 package pdf
 
 import (
+	"fmt"
 	"github.com/cynalytica/doc-tools/internal/flags"
 	"github.com/cynalytica/doc-tools/internal/utils"
 	"github.com/urfave/cli/v2"
@@ -9,6 +10,7 @@ import (
 )
 
 func TestCreate(t *testing.T) {
+	fmt.Println("DELETE ME")
 	app := cli.NewApp()
 	app.Before = func(cCtx *cli.Context) error {
 		err := utils.SetUpRegex(cCtx)
