@@ -6,7 +6,7 @@
 
 ```yml
 
-- uses: cynalytica/docs-tool@v1
+- uses: cynalytica/doc-tools@v1
   id: docs-to-pdf
   with:
     source-folder: "here lies dragons"
