@@ -24,7 +24,7 @@ inputs:
     default: ''
   token:
     description: Token used for downloading/uploading
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: ${{ github.TOKEN }}
 
 
 outputs:
