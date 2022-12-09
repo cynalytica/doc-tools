@@ -18,6 +18,10 @@ $for(classoption)$
   $classoption$$sep$,
 $endfor$
 ]{$documentclass$}
+$if(beamerarticle)$
+\usepackage{beamerarticle} % needs to be loaded first
+$endif$
+\usepackage{amsmath,amssymb}
 \usepackage[colorlinks=false,backref,linktoc=all]{hyperref}
 \hypersetup{pdftitle={CyRenQL Documentation}}
 \usepackage[letterpaper, margin=2cm]{geometry}
@@ -77,10 +81,6 @@ $if(section-titles)$
 }
 $endif$
 $endif$
-$if(beamerarticle)$
-\usepackage{beamerarticle} % needs to be loaded first
-$endif$
-\usepackage{amsmath,amssymb}
 $if(fontfamily)$
 \usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
 $else$
