@@ -68,9 +68,10 @@ runs:
     - shell: bash
       id: build-pdf
       run: |
-        outputdir=./
+        outputdir=.
         echo "OUTPUT DIR: $outputdir"
         echo "OUTPUT FILE: $outputdir/out.pdf"
+        ls -al
         doc-tools pdf -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-pdf }}" -o "$outputdir/out.pdf" 
         cp "$outputdir/out.pdf" "${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
         doc-tools toc -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-md }}"
