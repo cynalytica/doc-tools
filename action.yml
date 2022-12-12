@@ -69,14 +69,7 @@ runs:
       id: build-pdf
       run: |
         outputdir=.
-        echo "OUTPUT DIR: $outputdir"
-        echo "OUTPUT FILE: $outputdir/out.pdf"
-        ls -al
         doc-tools pdf -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-pdf }}" -o "$outputdir/out.pdf" 
-        echo "SOURCE FOLDER ${{ inputs.source-folder }}"
-        echo "COPY FROM $outputdir/out.pdf"
-        echo "COPY TO ${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
         cp "$outputdir/out.pdf" "${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
-        echo "COPIED"
         doc-tools toc -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-md }}"
         echo "file=$outputdir/out.pdf" >> $GITHUB_OUTPUT
