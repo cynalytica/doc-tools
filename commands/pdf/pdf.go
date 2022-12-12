@@ -4,6 +4,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"github.com/minio/cli"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -12,11 +13,9 @@ import (
 	"strings"
 
 	"github.com/adrg/frontmatter"
-	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli/v2"
-
 	"github.com/cynalytica/doc-tools/internal/flags"
 	"github.com/cynalytica/doc-tools/internal/utils"
+	"github.com/sirupsen/logrus"
 )
 
 //go:embed cyrenql.xml cytemplate.tex
@@ -150,7 +149,7 @@ abstract: %s
 		"--title", fmt.Sprintf("\"%s\"", title),
 		"--template", templateFile.Name(),
 		"--syntax-definition", syntaxFile.Name(),
-		"-o", outputFile,
+		"-o", fmt.Sprintf("\"%s\"", outputFile),
 		"--metadata", fmt.Sprintf("\"title=%s\"", title),
 		"--metadata", fmt.Sprintf("\"subtitle=%s\"", subtitle),
 		"--metadata", fmt.Sprintf("\"abstract=%s\"", abstract)}

@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/abhinav/goldmark-toc v0.2.1
 	github.com/adrg/frontmatter v0.2.0
+	github.com/minio/cli v1.24.2
 	github.com/sirupsen/logrus v1.9.0
 	github.com/urfave/cli/v2 v2.23.7
 	github.com/yuin/goldmark v1.5.3
