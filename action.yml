@@ -76,6 +76,7 @@ runs:
         echo "SOURCE FOLDER ${{ inputs.source-folder }}"
         echo "COPY FROM $outputdir/out.pdf"
         echo "COPY TO ${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
-        cp "$outputdir/out.pdf" "${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
-        doc-tools toc -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-md }}"
+        cp "$outputdir/out.pdf" "./${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
+        echo "COPIED"
+        doc-tools toc -l "./${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-md }}"
         echo "file=$outputdir/out.pdf" >> $GITHUB_OUTPUT

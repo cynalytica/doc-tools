@@ -26,7 +26,7 @@ func TestCreate(t *testing.T) {
 			Action:  Create,
 		},
 	}
-	if err := app.Run([]string{"pdf", "-l", "../../resources/test/project1", "-t", "Test Title", "-s", "Really nice subtitle.", "-d", strings.Repeat("And this is a really nice abstract. ", 20), "-o", "../../resources/test/project1/Cool Documentation.pdf", "-r", "/the/ttthhheee/", "pdf"}); err != nil {
+	if err := app.Run([]string{"pdf", "-l", "../../resources/test/project1", "-t", "Test Title", "-s", "Really nice subtitle.", "-d", strings.Repeat("This is a really nice abstract. ", 20), "-o", "/home/runner/work/analytics-engine/analytics-engine/ui/src/views/Docs/analytics-engine/media/AnalytICS Engine Documentation.pdf", "-r", "/the/ttthhheee/", "pdf"}); err != nil {
 		t.Fatal(err)
 	}
 }
