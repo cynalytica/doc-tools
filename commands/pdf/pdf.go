@@ -146,6 +146,8 @@ abstract: %s
 		"pdflatex",
 		"--from",
 		"markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes",
+		"--to",
+		"pdf",
 		"--title", fmt.Sprintf("\"%s\"", title),
 		"--template", templateFile.Name(),
 		"--syntax-definition", syntaxFile.Name(),
