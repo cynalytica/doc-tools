@@ -148,13 +148,13 @@ abstract: %s
 		"markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes",
 		"--to",
 		"pdf",
-		"--title", fmt.Sprintf("\"%s\"", title),
+		"--title", fmt.Sprintf("%s", title),
 		"--template", templateFile.Name(),
 		"--syntax-definition", syntaxFile.Name(),
 		"-o", outputFile,
-		"--metadata", fmt.Sprintf("\"title=%s\"", title),
-		"--metadata", fmt.Sprintf("\"subtitle=%s\"", subtitle),
-		"--metadata", fmt.Sprintf("\"abstract=%s\"", abstract)}
+		"--metadata", fmt.Sprintf("title=%s", title),
+		"--metadata", fmt.Sprintf("subtitle=%s", subtitle),
+		"--metadata", fmt.Sprintf("abstract=%s", abstract)}
 	args = append(args, orderedFiles...)
 	cmd := exec.Command("pandoc", args...)
 	str := cmd.String()
