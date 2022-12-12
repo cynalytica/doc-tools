@@ -151,7 +151,7 @@ abstract: %s
 		"--title", fmt.Sprintf("\"%s\"", title),
 		"--template", templateFile.Name(),
 		"--syntax-definition", syntaxFile.Name(),
-		"-o", fmt.Sprintf("\"%s\"", outputFile),
+		"-o", fmt.Sprintf("'%s'", strings.ReplaceAll(strings.ReplaceAll(outputFile, " ", "\\ "), "'", "\\'")),
 		"--metadata", fmt.Sprintf("\"title=%s\"", title),
 		"--metadata", fmt.Sprintf("\"subtitle=%s\"", subtitle),
 		"--metadata", fmt.Sprintf("\"abstract=%s\"", abstract)}
