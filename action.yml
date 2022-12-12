@@ -5,11 +5,9 @@ branding:
   color: orange
   icon: paperclip
 
-
-
 inputs:
   source-folder:
-    description: Locaiton of directory to convert to PDF
+    description: Location of docs directory.
   title:
     description: Title to apply to document
     default: ''
@@ -19,8 +17,11 @@ inputs:
   description:
     description: Description to apply to document
     default: ''
-  regex-file:
-    description: Location of a line seperated regex file.
+  regex-file-md:
+    description: Location of a line seperated regex file to process MD.
+    default: ''
+  regex-file-pdf:
+    description: Location of a line seperated regex file to process to PDF.
     default: ''
   token:
     description: Token used for downloading/uploading
@@ -29,7 +30,7 @@ inputs:
 
 outputs:
   outputfile:
-    description: "location of generated PDF"
+    description: Location of generated PDF
     value: ${{ steps.build-pdf.outputs.file}}
 
 runs:
@@ -68,5 +69,7 @@ runs:
       id: build-pdf
       run: |
         outputdir=$(mktemp -d)
-        doc-tools pdf -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" -o "$outputdir/${{ inputs.title }}.pdf" --regex-file "${{ inputs.regex-file}}"
+        doc-tools pdf -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-pdf }}" -o "$outputdir/${{ inputs.title }}.pdf" 
+        cp "$outputdir/${{ inputs.title }}.pdf" "${{ inputs.source-folder }}/media/${{ inputs.title }}.pdf"
+        doc-tools toc -l "${{ inputs.source-folder }}" -t "${{ inputs.title }}" -s "${{ inputs.subtitle }}" -d "${{ inputs.description }}" --regex-file "${{ inputs.regex-file-md }}"
         echo "file=$outputdir/${{inputs.title}}.pdf" >> $GITHUB_OUTPUT
