@@ -68,7 +68,7 @@ runs:
     - shell: bash
       id: build-pdf
       run: |
-        outputdir=$(pwd)
+        outputdir=.
         echo "OUTPUT DIR: $outputdir"
         echo "OUTPUT FILE: $outputdir/out.pdf"
         ls -al
