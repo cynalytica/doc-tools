@@ -4,7 +4,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"github.com/minio/cli"
+	"github.com/urfave/cli/v2"
 	"os"
 	"os/exec"
 	"path/filepath"
