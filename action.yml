@@ -63,6 +63,7 @@ runs:
         repo: doc-tools
         asset-pattern: linux_amd64
         install-path: /usr/local/bin/doc-tools
+        token: ${{ inputs.token }}
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
     - shell: bash
