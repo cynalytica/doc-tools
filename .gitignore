@@ -2,6 +2,8 @@
 resources/test/**/manifest.json
 resources/test/**/config.yaml
 resources/test/**/*.pdf
+resources/test/serialguards
+resources/test/analytics-engine
 doc-tools
 doc-tools.exe
 dist
