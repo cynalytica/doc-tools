@@ -26,7 +26,7 @@ func TestCreate(t *testing.T) {
 			Action:  Create,
 		},
 	}
-	if err := app.Run([]string{"pdf", "-l", "../../resources/test/serialguards", "-t", "Test Title", "-s", "Really nice subtitle.", "-d", strings.Repeat("This is a really nice abstract. ", 20), "-o", "../../resources/test/serialguards/media/SerialGuard Documentation.pdf", "-r", "/the/ttthhheee/", "pdf"}); err != nil {
+	if err := app.Run([]string{"pdf", "-l", "../../resources/test/serialguards", "-t", "Test Title", "-s", "Really nice subtitle.", "-d", strings.Repeat("This is a really nice abstract. ", 20), "--version", "1.2.3", "--commit", "abc123def456ggg789", "-o", "../../resources/test/serialguards/media/SerialGuard Documentation.pdf", "-r", "/the/ttthhheee/", "pdf"}); err != nil {
 		t.Fatal(err)
 	}
 }

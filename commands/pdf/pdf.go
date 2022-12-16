@@ -4,6 +4,10 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"github.com/adrg/frontmatter"
+	"github.com/cynalytica/doc-tools/internal/flags"
+	"github.com/cynalytica/doc-tools/internal/utils"
+	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"os"
 	"os/exec"
@@ -11,11 +15,7 @@ import (
 	"runtime/debug"
 	"sort"
 	"strings"
-
-	"github.com/adrg/frontmatter"
-	"github.com/cynalytica/doc-tools/internal/flags"
-	"github.com/cynalytica/doc-tools/internal/utils"
-	"github.com/sirupsen/logrus"
+	"time"
 )
 
 //go:embed cyrenql.xml cytemplate.tex
@@ -140,11 +140,22 @@ abstract: %s
 		orderedFiles = append(orderedFiles, temp.Name())
 	}
 
+	// get version info ready to insert
+	versionInfo := make([]string, 0, 2)
+	if ctx.String(flags.Version) != "" {
+		versionInfo = append(versionInfo, fmt.Sprintf("[%s]", ctx.String(flags.Version)))
+	}
+	if ctx.String(flags.CommitHash) != "" {
+		versionInfo = append(versionInfo, fmt.Sprintf("[%s]", ctx.String(flags.CommitHash)))
+	}
+	versionInfo = append(versionInfo, fmt.Sprintf("[%s]", time.Now().Format(time.RFC1123)))
+
 	// run the pandoc command
-	args := []string{"-s",
+	args := []string{
+		"-s",
 		"--toc",
 		"--pdf-engine", "pdflatex",
-		"--from", "markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes",
+		"--from", "markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes-implicit_figures",
 		"--to", "pdf",
 		"--resource-path", fmt.Sprintf(".:%s:%s", projectPath, mediaDir),
 		"--resource-path", fmt.Sprintf(".;%s;%s", projectPath, mediaDir),
@@ -154,7 +165,8 @@ abstract: %s
 		"-o", outputFile,
 		"--metadata", fmt.Sprintf("title=%s", title),
 		"--metadata", fmt.Sprintf("subtitle=%s", subtitle),
-		"--metadata", fmt.Sprintf("abstract=%s", abstract)}
+		"--metadata", fmt.Sprintf("abstract=%s %s", abstract, strings.Join(versionInfo, " ")),
+	}
 	args = append(args, orderedFiles...)
 	cmd := exec.Command("pandoc", args...)
 	str := cmd.String()

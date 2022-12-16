@@ -20,5 +20,7 @@ const (
 
 	// PDF configs
 
-	Output = "output"
+	Output     = "output"
+	Version    = "version"
+	CommitHash = "commit"
 )

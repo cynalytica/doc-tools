@@ -117,5 +117,13 @@ func BuildPdfFlags() []cli.Flag {
 			Aliases:     []string{"o"},
 			Required:    true,
 		},
+		&cli.StringFlag{
+			Name:     Version,
+			Required: false,
+		},
+		&cli.StringFlag{
+			Name:     CommitHash,
+			Required: false,
+		},
 	}
 }
