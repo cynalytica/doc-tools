@@ -59,6 +59,7 @@ func Create(ctx *cli.Context) error {
 	}
 	projectPath := filepath.Join(wd, dir)
 	fileDir := filepath.Join(projectPath, "files")
+	mediaDir := filepath.Join(projectPath, "media")
 	outputFile := ctx.String(flags.Output)
 	if filepath.Ext(outputFile) != ".pdf" {
 		outputFile = outputFile + ".pdf"
@@ -70,7 +71,7 @@ func Create(ctx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	syntaxFile, err := createTemp("cyrenql.xml", syntaxContent)
+	syntaxFile, err := createTemp("cyrenql*.xml", syntaxContent)
 	if err != nil {
 		return err
 	}
@@ -79,7 +80,7 @@ func Create(ctx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	templateFile, err := createTemp("cytemplate.tex", templateContent)
+	templateFile, err := createTemp("cytemplate*.tex", templateContent)
 	if err != nil {
 		return err
 	}
@@ -117,7 +118,7 @@ subtitle: %s
 abstract: %s
 ---
 `, title, subtitle, abstract))
-	f, err := createTemp("title.md", titleContent)
+	f, err := createTemp("title*.md", titleContent)
 	files = append(files, file{
 		Location: f.Name(),
 		Index:    0,
@@ -142,12 +143,11 @@ abstract: %s
 	// run the pandoc command
 	args := []string{"-s",
 		"--toc",
-		"--pdf-engine",
-		"pdflatex",
-		"--from",
-		"markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes",
-		"--to",
-		"pdf",
+		"--pdf-engine", "pdflatex",
+		"--from", "markdown+escaped_line_breaks+backtick_code_blocks+pipe_tables+multiline_tables+fenced_code_attributes",
+		"--to", "pdf",
+		"--resource-path", fmt.Sprintf(".:%s:%s", projectPath, mediaDir),
+		"--resource-path", fmt.Sprintf(".;%s;%s", projectPath, mediaDir),
 		"--title", fmt.Sprintf("%s", title),
 		"--template", templateFile.Name(),
 		"--syntax-definition", syntaxFile.Name(),
