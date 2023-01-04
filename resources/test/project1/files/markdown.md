@@ -2,7 +2,7 @@
 nav_order: 2
 ---
 
-# h1 Heading 8-)
+# !{link[Hello from markdown.md](/hello)}
 ## h2 Heading
 ### h3 Heading
 #### h4 Heading

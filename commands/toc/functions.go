@@ -4,9 +4,12 @@ import (
 	tocLib "github.com/abhinav/goldmark-toc"
 	"github.com/cynalytica/doc-tools/internal/utils"
 	"github.com/yuin/goldmark/ast"
+	"regexp"
 	"strings"
 	"unicode"
 )
+
+var re = regexp.MustCompile("!\\{link(.*)}")
 
 // nodeText walks node and extracts plain text from it and its descendants,
 // effectively removing all markdown syntax
@@ -28,7 +31,7 @@ func nodeText(node ast.Node, src []byte) string {
 	if err := ast.Walk(node, fn); err != nil {
 		return ""
 	}
-	return b.String()
+	return re.ReplaceAllString(b.String(), "$1")
 }
 
 func slugify(text string) string {
