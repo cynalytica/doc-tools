@@ -2,7 +2,7 @@
 nav_order: 3
 ---
 
-# GFM
+# !{link[Hello from example.md](/hello#stuff)}
 
 ## Autolink literals
 

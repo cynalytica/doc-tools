@@ -2,6 +2,8 @@
 nav_order: 1
 ---
 
+# !{link[Hello from file.md](/hello#stuff2)}
+
 [TOCM]
 
 [TOC]
