@@ -60,7 +60,7 @@ func handleLayer(item *tocLib.Item) toc {
 		Children: make([]toc, 0),
 	}
 	item.Title = utils.IdRegex.ReplaceAll(item.Title, []byte{})
-	ref.Title = string(item.Title)
+	ref.Title = re.ReplaceAllString(string(item.Title), "$1")
 	ref.ID = string(item.ID)
 	ref.Children = make([]toc, 0)
 	for _, child := range item.Items {
