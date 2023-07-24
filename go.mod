@@ -7,7 +7,7 @@ require (
 	github.com/adrg/frontmatter v0.2.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/urfave/cli/v2 v2.23.7
-	github.com/yuin/goldmark v1.5.3
+	github.com/yuin/goldmark v1.5.5
 )
 
 require (
